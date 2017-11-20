@@ -1,15 +1,18 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AngularFirestore,AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+
 import 'rxjs/add/operator/map';
 
 
-interface Post {
-  title: string;
-  content: string;
+interface Contact {
+  name: string;
+  phone: string;
+  email: string;
+  message: string;
 }
 
-interface PostId extends Post { 
+interface ContactId extends Contact { 
   id: string; 
 }
 
@@ -23,43 +26,44 @@ interface PostId extends Post {
 
 
 export class AppComponent {
-  postsCol: AngularFirestoreCollection<Post>;
-  title:string;
-  content:string;
-  posts: any;
-  postDoc: AngularFirestoreDocument<Post>;
-  post: Observable<Post>;
+  contactsCol: AngularFirestoreCollection<Contact>;
+  name:string;
+  phone:string;
+  email:string;
+  message: string;
+  contacts: any;
+  contactDoc: AngularFirestoreDocument<Contact>;
+  contact: Observable<Contact>;
 
   items: Observable<any[]>;
-  constructor(private afs: AngularFirestore) {
-   
-  }
-
-  addPost() {
-    this.afs.collection('posts').add({'title': this.title, 'content': this.content});
-  }
-  deletePost(postId) {
-    this.afs.doc('posts/'+postId).delete();
-  }
-
-  getPost(postId) {
-    this.postDoc = this.afs.doc('posts/'+postId);
-    this.post = this.postDoc.valueChanges();
-  }
+  constructor(private afs: AngularFirestore) { }
 
   ngOnInit() {
-    this.postsCol = this.afs.collection('posts');
-    // this.posts = this.postsCol.valueChanges();
+    this.contactsCol = this.afs.collection('contacts');
 
-    this.posts = this.postsCol.snapshotChanges()
+    this.contacts = this.contactsCol.snapshotChanges()
     .map(actions => {
       return actions.map(a => {
-        const data = a.payload.doc.data() as Post;
+        const data = a.payload.doc.data() as Contact;
         const id = a.payload.doc.id;
         return { id, data };
       });
     });
   }
+
+  addContact() {
+    this.afs.collection('contacts').add({'name': this.name,  'phone': this.phone ,'email': this.email , 'message': this.message});
+  }
+  deleteContact(contactId) {
+    this.afs.doc('contacts/'+contactId).delete();
+  }
+
+  getContact(contactId) {
+    this.contactDoc = this.afs.doc('contacts/'+contactId);
+    this.contact = this.contactDoc.valueChanges();
+  }
+
+ 
 
   
 }

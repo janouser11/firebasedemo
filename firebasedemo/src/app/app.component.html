@@ -1,24 +1,24 @@
-<!-- <ul *ngFor="let post of posts | async">
-    <li>
-      <strong>{{ post.title}}</strong>
+
+
+
+    <input type="text" [(ngModel)]="name" name="name" placeholder="Name.." required>
+    <input type="text" [(ngModel)]="phone" name="phone" placeholder="Phone Number.." required>
+    <input type="email" [(ngModel)]="email" name="email" placeholder="Email.." required>
+    <textarea [(ngModel)]="message" name="message" placeholder="Message.." required></textarea>
+  
+    <input class="submit" type="submit" value="Add a Contact" (click)="addContact()">
+
+  <h1>Contacts:</h1>
+
+
+  <ul *ngFor="let contact of contacts | async">
+    <li (click)="getContact(contact.id)">
+        <strong>{{ contact.data.name}}</strong> (<a href="#" (click)="deleteContact(contact.id)">delete</a>)
       <br>
-      {{post.content}}
+      {{contact.data.phone}}
+      <br>
+      {{contact.data.email}}
+      <br>
+      <i>{{contact.data.message}}</i>
     </li>
-  </ul> -->
-
-  <ul *ngFor="let post of posts | async">
-      <li (click)="getPost(post.id)">
-          <strong>{{ post.data.title}}</strong> (<a href="#" (click)="deletePost(post.id)">delete</a>)
-        <br>
-        {{post.data.content}}
-      </li>
-    </ul>
-
-  <input type="text" [(ngModel)]="title" name="title" placeholder="Title..">
-  <textarea [(ngModel)]="content" name="content" placeholder="Content.."></textarea>
-  <input type="submit" value="Add a Post" (click)="addPost()">
-
-
-  <h1>A specific post:</h1>
-  <h3>{{ (singlePost | async)?.title }}</h3>
-  <p>{{ (singlePost | async)?.content }}</p>
+  </ul>
